@@ -14,3 +14,9 @@ def test_virus_instantiation():
     assert virus.name == "HIV"
     assert virus.repro_rate == 0.8
     assert virus.mortality_rate == 0.3
+
+def test_black_death_instantiation():
+    virus= Virus("Black Death", 1, 0.6)
+    assert virus.name == "Black Death"
+    assert virus.repro_rate == 1
+    assert virus.mortality_rate == 0.6
