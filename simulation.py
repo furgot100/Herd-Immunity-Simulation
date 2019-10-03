@@ -1,5 +1,6 @@
 import random, sys
 random.seed(42)
+import math
 from person import Person
 from logger import Logger
 from virus import Virus
@@ -68,8 +69,20 @@ class Simulation(object):
 
         # Use the attributes created in the init method to create a population that has
         # the correct intial vaccination percentage and initial infected.
-        pass
-
+        
+        total_un_affected = initial_infected + math.floor(self.vacc_percentage * self.pop_size)
+        people = []
+        if i in range(self.pop_size):
+            if i < initial_infected:
+                i = Person(number, False, self.virus)
+                self.current_infected += 1
+                self.total_infected += 1
+            elif i < total_un_affected:
+                i = Person(number,True)
+            else:
+                i = Person(number, False)
+            people.append(i)
+            return people
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
         or everyone is vaccinated.
@@ -78,7 +91,10 @@ class Simulation(object):
                 bool: True for simulation should continue, False if it should end.
         '''
         # TODO: Complete this helper method.  Returns a Boolean.
-        pass
+        if self.current_infected == 0:
+            return False
+        else:
+            return True
 
     def run(self):
         ''' This method should run the simulation until all requirements for ending
@@ -92,7 +108,8 @@ class Simulation(object):
         # HINT: You may want to call the logger's log_time_step() method at the end of each time step.
         # TODO: Set this variable using a helper
         time_step_counter = 0
-        should_continue = None
+        should_continue = True
+
 
         while should_continue:
         # TODO: for every iteration of this loop, call self.time_step() to compute another
