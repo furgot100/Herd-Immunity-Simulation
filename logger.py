@@ -9,7 +9,7 @@ class Logger(object):
     def __init__(self, file_name):
         # TODO:  Finish this initialization method. The file_name passed should be the
         # full file name of the file that the logs will be written to.
-        self.file_name = None
+        self.file_name = file_name
 
     def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
                        basic_repro_num):
@@ -52,7 +52,11 @@ class Logger(object):
         # TODO: Finish this method. If the person survives, did_die_from_infection
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
-        pass
+        file = open(self.file_name, 'a')
+        if did_die_from_infection is True:
+            file.write(f"{person._id} died from infection\n")
+        else:
+            file.write(f"{person._id} survived the infection.\n")
 
     def log_time_step(self, time_step_number):
         ''' STRETCH CHALLENGE DETAILS:
