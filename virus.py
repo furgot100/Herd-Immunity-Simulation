@@ -20,3 +20,10 @@ def test_black_death_instantiation():
     assert virus.name == "Black Death"
     assert virus.repro_rate == 1
     assert virus.mortality_rate == 0.6
+
+def test_anthrax_instantiation():
+    virus = Virus("Anthrax", 6.5, 0.2)
+    assert virus.name == "Anthrax"
+    assert virus.repro_rate == 6.5
+    assert virus.mortality_rate == 0.2
+
