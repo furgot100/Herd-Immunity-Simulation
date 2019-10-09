@@ -37,6 +37,8 @@ class Person(object):
                 self.is_vaccinated = True
                 self.infection = None
                 return True
+        else:
+            return None
 
 
 
@@ -66,7 +68,13 @@ def test_sick_person_instantiation():
     # TODO: complete your own assert statements that test
     # the values at each attribute
     # assert ...
-    pass
+    assert person._id == 3
+    assert person.is_alive is True
+    assert person.is_vaccinated is False
+    assert person.infection == virus
+    assert person.infection.mortality_rate == 0.2
+    assert person.infection.name == 'Dysentery'
+    assert person.infection.repro_rate == 0.7
 
 
 def test_did_survive_infection():
