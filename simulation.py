@@ -81,13 +81,13 @@ class Simulation(object):
         people = []
         for i in range(self.pop_size):
             if i < initial_infected:
-                i = Person(number, False, self.virus)
+                i = Person(i, False, self.virus)
                 self.current_infected += 1
                 self.total_infected += 1
             elif i < total_un_affected:
-                i = Person(number,True)
+                i = Person(i,True)
             else:
-                i = Person(number, False)
+                i = Person(i, False)
             people.append(i)
             return people
     def _simulation_should_continue(self):
@@ -123,12 +123,20 @@ class Simulation(object):
         # round of this simulation.
             time_step_counter +=1
             self.time_step()
-            self.logger.log_time_step(time_step_counter, self.current_infected, self.new_deaths, self.new_vaccinations,
-            self.new_deaths, self.new_vaccinations, self.total_infected, self.total_dead, self.total_vaccinated)
+            # self.logger.log_time_step(time_step_counter, self.current_infected, self.new_deaths, self.new_vaccinations,
+            # self.total_infected, self.total_dead,self.total_vaccinated)
             should_continue = self._simulation_should_continue()
 
         print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
 
+    def get_infected(self):
+        infected_list=[]
+        self.current_infected = 0
+        for person in self.population:
+            if person.infection is not None and person.is_alive:
+                infected_list.append(person)
+                self.current_infected += 1
+        return infected_list
 
     def time_step(self):
         ''' This method should contain all the logic for computing one time step
@@ -145,14 +153,15 @@ class Simulation(object):
         # TODO: Finish this method.
         self.new_deaths = 0
         self.new_vaccinations = 0
+        infected_list = self.get_infected()
 
-        for people in self.get_infected():
+        for people in infected_list:
             interaction_count = 0
             while interaction_count < 100:
                 random_person = random.choice(self.population)
                 while not random_person.is_alive:
                     random_person = random.choice(self.population)
-                self.interaction(person, random_person)
+                self.interaction(people, random_person)
                 interaction_count +=1
 
         for person in self.get_infected():
@@ -233,7 +242,7 @@ if __name__ == "__main__":
     else:
         initial_infected = 1
 
-    virus = Virus(name, repro_rate, mortality_rate)
+    virus = Virus(virus_name, repro_num, mortality_rate)
     sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
 
     sim.run()
