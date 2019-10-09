@@ -23,7 +23,7 @@ class Logger(object):
         # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
-        file = open(self.file_name, "w")
+        file = open(self.file_name, "w+")
         file.write(f"Population size: {pop_size}\tVaccination percentage: {vacc_percentage}\t" 
                 f"Virus name: {virus_name}\tMortality rate: {mortality_rate}\t"
                 f"Basic reproduction number: {basic_repro_num}\n")
