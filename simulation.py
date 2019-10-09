@@ -57,7 +57,7 @@ class Simulation(object):
         self.logger.write_metadata(self.pop_size, self.vacc_percentage,
                                    self.virus.name, self.virus.mortality_rate,
                                    self.virus.repro_rate)
-        
+
     def _create_population(self, initial_infected):
         '''This method will create the initial population.
             Args:
@@ -230,15 +230,15 @@ class Simulation(object):
 
 if __name__ == "__main__":
     params = sys.argv[1:]
-    virus_name = str(params[0])
-    repro_num = float(params[1])
-    mortality_rate = float(params[2])
+    virus_name = str(params[2])
+    repro_num = float(params[4])
+    mortality_rate = float(params[3])
 
-    pop_size = int(params[3])
-    vacc_percentage = float(params[4])
+    pop_size = int(params[0])
+    vacc_percentage = float(params[1])
 
     if len(params) == 6:
-        initial_infected = int(params[5])
+        initial_infected = int(params[0])
     else:
         initial_infected = 1
 
