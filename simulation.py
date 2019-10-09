@@ -14,7 +14,7 @@ class Simulation(object):
     population that are vaccinated, the size of the population, and the amount of initially
     infected people in a population are all variables that can be set when the program is run.
     '''
-    def __init__(self, pop_size, vacc_percentage, initial_infected=1, virus):
+    def __init__(self, pop_size, vacc_percentage,virus, initial_infected=1):
         ''' Logger object logger records all events during the simulation.
         Population represents all Persons in the population.
         The next_person_id is the next available id for all created Persons,
@@ -37,25 +37,27 @@ class Simulation(object):
         # TODO: Store each newly infected person's ID in newly_infected attribute.
         # At the end of each time step, call self._infect_newly_infected()
         # and then reset .newly_infected back to an empty list.
-        self.population = self._create_population(self.initial_infected) # List of Person objects
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
-        self.virus = virus # Virus object
         self.initial_infected = initial_infected # Int
+        self.virus = virus # Virus object
+        self.vacc_percentage = vacc_percentage # float between 0 and 1
         self.total_infected = 0 # Int
         self.current_infected = 0 # Int
-        self.vacc_percentage = vacc_percentage # float between 0 and 1
+        self.new_deaths = 0
         self.total_dead = 0 # Int
-        self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
-                        self.virus.name, self.pop_size, self.vacc_percentage,
-                        self.initial_infected)
+        self.new_vaccinations = 0
+        self.total_vaccinated = 0
+        self.population = self._create_population(self.initial_infected) # List of Person objects
+        self.file_name = "logs/{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
+                        virus.name, pop_size, vacc_percentage,
+                        initial_infected)
         self.logger = Logger(self.file_name)
         self.newly_infected = []
-        self.population = self._create_population()
         self.logger.write_metadata(self.pop_size, self.vacc_percentage,
                                    self.virus.name, self.virus.mortality_rate,
                                    self.virus.repro_rate)
-
+        
     def _create_population(self, initial_infected):
         '''This method will create the initial population.
             Args:
@@ -148,7 +150,7 @@ class Simulation(object):
             interaction_count = 0
             while interaction_count < 100:
                 random_person = random.choice(self.population)
-                while not ranome_person.is_alive:
+                while not random_person.is_alive:
                     random_person = random.choice(self.population)
                 self.interaction(person, random_person)
                 interaction_count +=1
