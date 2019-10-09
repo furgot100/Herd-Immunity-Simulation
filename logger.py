@@ -29,7 +29,7 @@ class Logger(object):
                 f"Mortality rate: {mortality_rate}\t" +
                 f"Basic reproduction number: {basic_repro_num}\n")
         file.close()
-        pass
+
 
     def log_interaction(self, person, random_person, random_person_sick=None,
                         random_person_vacc=None, did_infect=None):
@@ -57,7 +57,7 @@ class Logger(object):
             file.write(f'Person {person._id} does not infect person {random_person._id}' '\n')
 
         flie.close()
-        
+
     def log_infection_survival(self, person, did_die_from_infection):
         ''' The Simulation object uses this method to log the results of every
         call of a Person object's .resolve_infection() method.
@@ -93,4 +93,3 @@ class Logger(object):
         # TODO: Finish this method. This method should log when a time step ends, and a
         # new one begins.
         # NOTE: Here is an opportunity for a stretch challenge!
-        pass

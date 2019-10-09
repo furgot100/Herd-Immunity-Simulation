@@ -37,7 +37,6 @@ class Simulation(object):
         # TODO: Store each newly infected person's ID in newly_infected attribute.
         # At the end of each time step, call self._infect_newly_infected()
         # and then reset .newly_infected back to an empty list.
-        self.logger = None
         self.population = [] # List of Person objects
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
@@ -48,8 +47,14 @@ class Simulation(object):
         self.vacc_percentage = vacc_percentage # float between 0 and 1
         self.total_dead = 0 # Int
         self.file_name = "{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
-            virus_name, population_size, vacc_percentage, initial_infected)
+                        self.virus.name, self.pop_size, self.vacc_percentage,
+                        self.initial_infected)
+        self.logger = Logger(self.file_name)
         self.newly_infected = []
+        self.population = self._create_population()
+        self.logger.write_metadata(self.pop_size, self.vacc_percentage,
+                                   self.virus.name, self.virus.mortality_rate,
+                                   self.virus.repro_rate)
 
     def _create_population(self, initial_infected):
         '''This method will create the initial population.
@@ -114,8 +119,14 @@ class Simulation(object):
         while should_continue:
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
+            time_step_counter +=1
+            self.time_step()
+            self.logger.log_time_step(time_step_counter, self.current_infected, self.new_deaths, self.new_vaccinations,
+            self.new_deaths, self.new_vaccinations, self.total_infected, self.total_dead, self.total_vaccinated)
+            should_continue = self._simulation_should_continue()
+
         print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
-        pass
+
 
     def time_step(self):
         ''' This method should contain all the logic for computing one time step
@@ -130,7 +141,8 @@ class Simulation(object):
                 increment interaction counter by 1.
             '''
         # TODO: Finish this method.
-        pass
+
+
 
     def interaction(self, person, random_person):
         '''This method should be called any time two living people are selected for an
