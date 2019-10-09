@@ -23,10 +23,9 @@ class Logger(object):
         # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
-        file = open(self.file_name, "w+")
-        file.write(f"Population size: {pop_size}\tVaccination percentage: " +
-                f"{vacc_percentage}\tVirus name: {virus_name}\t" +
-                f"Mortality rate: {mortality_rate}\t" +
+        file = open(self.file_name, "w")
+        file.write(f"Population size: {pop_size}\tVaccination percentage: {vacc_percentage}\t" 
+                f"Virus name: {virus_name}\tMortality rate: {mortality_rate}\t"
                 f"Basic reproduction number: {basic_repro_num}\n")
         file.close()
 
@@ -48,15 +47,14 @@ class Logger(object):
         # exactly what happened in the interaction and create a String, and write to your logfile.
         file = open(self.file_name, 'a')
         if did_infect:
-            file.write(f'Person {person._id} infects person {random_person._id}' '\n')
+            file.write(f'Person {person._id} infects person {random_person._id}\n')
         elif random_person_vacc:
-            file.write(f'Person {person._id} does not infect person' f'{random_person._id} because they are vaccinated \n')
+            file.write(f'Person {person._id} does not infect person {random_person._id} because they are vaccinate \n')
         elif random_person_sick:
-            file.write(f'Person {person._id} does not infect {random_person._id}' 'Because they\'re already infected \n')
+            file.write(f'Person {person._id} does not infect {random_person._id} Because they are already infected \n')
         else:
-            file.write(f'Person {person._id} does not infect person {random_person._id}' '\n')
-
-        flie.close()
+            file.write(f'Person {person._id} does not infect person {random_person._id} \n')
+        file.close()
 
     def log_infection_survival(self, person, did_die_from_infection):
         ''' The Simulation object uses this method to log the results of every
@@ -69,7 +67,7 @@ class Logger(object):
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
         file = open(self.file_name, 'a')
-        if did_die_from_infection is True:
+        if did_die_from_infection:
             file.write(f"{person._id} died from infection\n")
         else:
             file.write(f"{person._id} survived the infection.\n")

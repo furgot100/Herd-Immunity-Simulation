@@ -76,19 +76,19 @@ class Simulation(object):
 
         # Use the attributes created in the init method to create a population that has
         # the correct intial vaccination percentage and initial infected.
-
-        total_un_affected = initial_infected + math.floor(self.vacc_percentage * self.pop_size)
-        people = []
-        for i in range(self.pop_size):
-            if i < initial_infected:
-                i = Person(i, False, self.virus)
+        population = []
+        total_un_affected = int(self.vacc_percentage * self.pop_size)
+        
+        for people in range(self.pop_size):
+            if people < initial_infected:
+                people = Person(people, False, self.virus)
                 self.current_infected += 1
                 self.total_infected += 1
-            elif i < total_un_affected:
-                i = Person(i,True)
+            elif people < total_un_affected:
+                people = Person(people,True)
             else:
-                i = Person(i, False)
-            people.append(i)
+                people = Person(people, False)
+            population.append(people)
             return people
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
@@ -243,6 +243,6 @@ if __name__ == "__main__":
         initial_infected = 1
 
     virus = Virus(virus_name, repro_num, mortality_rate)
-    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+    sim = Simulation(pop_size, vacc_percentage, virus, initial_infected )
 
     sim.run()
