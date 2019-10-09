@@ -141,7 +141,30 @@ class Simulation(object):
                 increment interaction counter by 1.
             '''
         # TODO: Finish this method.
+        self.new_deaths = 0
+        self.new_vaccinations = 0
 
+        for people in self.get_infected():
+            interaction_count = 0
+            while interaction_count < 100:
+                random_person = random.choice(self.population)
+                while not ranome_person.is_alive:
+                    random_person = random.choice(self.population)
+                self.interaction(person, random_person)
+                interaction_count +=1
+
+        for person in self.get_infected():
+            survive = person.did_survive_infection()
+            if survive:
+                self.total_vaccinated +=1
+                self.new_vaccinations +=1
+                self.logger.log_infection_survival(person, False)
+            else:
+                self.total_dead +=1
+                self.new_deaths +=1
+                self.logger.log_infection_survival(person, True)
+        self._infect_newly_infected()
+        self.get_infected()
 
 
     def interaction(self, person, random_person):
@@ -169,7 +192,16 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their .infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call slogger method during this method.
-        pass
+        if random_person.is_vaccinated:
+            self.logger.log_interaction(person, random_person, False, True, False)
+        elif random_person.infection is not None:
+            self.logger.log_interaction(person, random_person, True, False, False)
+        else:
+            if random.random() < person.infection.repro_rate and self.newly_infected.count(random_person._id)==0:
+                self.newly_infected.append(random_person._id)
+                self.logger.log_interaction(person, random_person, False, False, True)
+            else:
+                self.logger.log_interaction(person, random_person, False, False, False)
 
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected
