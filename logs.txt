@@ -1,1 +1,1 @@
-Population size: 100000	Vaccination percentage: 0.9	Virus name: Ebola	Mortality rate: 0.7	Basic reproduction number: 0.25
+Population size: 1000	Vaccination percentage: 0.9	Virus name: Ebola	Mortality rate: 0.7	Basic reproduction number: 0.25

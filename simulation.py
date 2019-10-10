@@ -113,6 +113,7 @@ class Simulation(object):
                 infected_list.append(person)
                 self.current_infected += 1
         return infected_list
+        print(infected_list)
     def run(self):
         ''' This method should run the simulation until all requirements for ending
         the simulation are met.
@@ -132,6 +133,7 @@ class Simulation(object):
         while should_continue:
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
+            print(should_continue)
             self.time_step()
             self.time_step_counter +=1
             log.log_time_step(self.time_step_counter)
@@ -154,13 +156,14 @@ class Simulation(object):
         # TODO: Finish this method.
         interactions = 0
         for person in self.population:
+            interactions = 0
             while interactions < 100:
                 if person.is_alive == True and person.infection is not None:
                     random_person = random.choice(self.population)
                     if (random_person.is_alive == True):
                         self.interaction(person, random_person)
                         interactions += 1
-                        print(interactions)
+                        # print(interactions)
                     else:
                         pass
                 else:
