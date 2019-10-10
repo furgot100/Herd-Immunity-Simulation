@@ -6,7 +6,7 @@ from virus import Virus
 class Person(object):
     ''' Person objects will populate the simulation. '''
 
-    def __init__(self, _id, is_vaccinated, infection=None):
+    def __init__(self, _id, is_vaccinated, infection):
         ''' We start out with is_alive = True, because we don't make vampires or zombies.
         All other values will be set by the simulation when it makes each Person object.
 
@@ -27,18 +27,12 @@ class Person(object):
         '''
         # Only called if infection attribute is not None.
         # TODO:  Finish this method. Should return a Boolean
-        if self.infection is not None:
-            living = random.random()
-            if living <= self.infection.mortality_rate:
-                self.is_alive = False
-                self.infection = None
-                return False
-            else:
-                self.is_vaccinated = True
-                self.infection = None
-                return True
+        draw = random()
+        if draw < mortality_rate:
+            self.is_alive = False
         else:
-            return None
+            self.is_alive = True
+            self.infection = None
 
 
 
@@ -57,7 +51,7 @@ def test_not_vacc_person_instantiation():
     # TODO: complete your own assert statements that test
     # the values at each attribute
     # assert ...
-    pass
+
 
 
 def test_sick_person_instantiation():
@@ -96,4 +90,3 @@ def test_did_survive_infection():
         # TODO: Write your own assert statements that test
         # the values of each attribute for a Person who did not survive
         # assert ...
-        pass

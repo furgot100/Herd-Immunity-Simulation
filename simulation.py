@@ -1,6 +1,7 @@
 import random, sys
 random.seed(42)
 import math
+from random import uniform
 from person import Person
 from logger import Logger
 from virus import Virus
@@ -96,11 +97,20 @@ class Simulation(object):
                 bool: True for simulation should continue, False if it should end.
         '''
         # TODO: Complete this helper method.  Returns a Boolean.
-        if len(self.get_infected()) == 100:
+        if len(self.get_infected()) == 0:
             return False
         else:
             return True
+    def get_infected(self):
+        infected_list=[]
 
+        self.current_infected = 0
+        for person in self.population:
+            if person.infection is not None and person.is_alive == True:
+                infected_list.append(person)
+                self.current_infected += 1
+        print(infected_list)
+        return infected_list
     def run(self):
         ''' This method should run the simulation until all requirements for ending
         the simulation are met.
@@ -126,15 +136,6 @@ class Simulation(object):
             should_continue = self._simulation_should_continue()
 
         print(f'The simulation has ended after {self.time_step_counter} turns.')
-
-    def get_infected(self):
-        infected_list=[]
-        self.current_infected = 0
-        for person in self.population:
-            if person.infection is not None and person.is_alive == True:
-                infected_list.append(person)
-                self.current_infected += 1
-        return infected_list
 
     def time_step(self):
         ''' This method should contain all the logic for computing one time step
@@ -202,16 +203,20 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their .infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call slogger method during this method.
-        if random_person.is_vaccinated:
-            self.logger.log_interaction(person, random_person, False, True, False)
-        elif random_person.infection is not None:
-            self.logger.log_interaction(person, random_person, True, False, False)
-        else:
-            if random.random() < person.infection.repro_rate and self.newly_infected.count(random_person._id)==0:
-                self.newly_infected.append(random_person._id)
-                self.logger.log_interaction(person, random_person, False, False, True)
-            else:
-                self.logger.log_interaction(person, random_person, False, False, False)
+        # if random_person.is_vaccinated:
+        #     self.logger.log_interaction(person, random_person, False, True, False)
+        # elif random_person.infection is not None:
+        #     self.logger.log_interaction(person, random_person, True, False, False)
+        # else:
+        #     if random.random() < person.infection.repro_rate and self.newly_infected.count(random_person._id)==0:
+        #         self.newly_infected.append(random_person._id)
+        #         self.logger.log_interaction(person, random_person, False, False, True)
+        #     else:
+        #         self.logger.log_interaction(person, random_person, False, False, False)
+        draw = uniform(0,1)
+        person = person.infection
+        if draw < person.repro_rate:
+            self.newly_infected.append(random_person)
 
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected
@@ -219,13 +224,9 @@ class Simulation(object):
         # TODO: Call this method at the end of every time step and infect each Person.
         # TODO: Once you have iterated through the entire list of self.newly_infected, remember
         # to reset self.newly_infected back to an empty list.
-        for person in self.population:
-            for id in self.newly_infected:
-                if person._id == id:
-                    person.infection = self.virus
-                    self.total_infected += 1
-                    self.current_infected += 1
-        self.newly_infected = []
+        for person in self.newly_infected:
+            person.infection = self.virus
+            self.total_infected +=1
 
 if __name__ == "__main__":
     params = sys.argv[1:]
