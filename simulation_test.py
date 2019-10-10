@@ -14,3 +14,10 @@ def test_infection():
     infected_person = Person(id,True,False,anthrax)
     uninfected = Person(id,True,False, None)
     anthrax_sim.interaction(infected_person,uninfected)
+
+
+test_infection()
+
+
+
+
