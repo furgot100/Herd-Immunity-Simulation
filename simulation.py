@@ -53,6 +53,7 @@ class Simulation(object):
         self.population = []# List of Person objects
         self.file_name = "logs.txt"
         self.logger = Logger(self.file_name)
+        self.id = 0
         self.newly_infected = []
         self.logger.write_metadata(self.pop_size, self.vacc_percentage,
                                    self.virus.name, self.virus.mortality_rate,
@@ -76,19 +77,21 @@ class Simulation(object):
 
         # Use the attributes created in the init method to create a population that has
         # the correct intial vaccination percentage and initial infected.
-        population = []
-        total_un_affected = int(self.vacc_percentage * self.pop_size)
+        create_pop = True
+        while create_pop:
+            virus = self.virus
+            while len(self.population) <= initial_infected:
+                self.id += 1
+                infected_person = Person(self.id, True, False, virus)
+                self.population.append(infected_person)
 
-        for people in range(self.pop_size):
-            if people < initial_infected:
-                people = Person(people, False, self.virus)
-                self.current_infected += 1
-            elif people < total_un_affected:
-                people = Person(people,True)
+            while len(self.population) <= 99:
+                self.id += 1
+                uninfected_person = Person(self.id, True, False, None)
+                self.population.append(uninfected_person)
             else:
-                people = Person(people, False)
-            population.append(people)
-            return people
+                create_pop = False
+        return self.population
     def _simulation_should_continue(self):
         ''' The simulation should only end if the entire population is dead
         or everyone is vaccinated.
@@ -109,7 +112,6 @@ class Simulation(object):
             if person.infection is not None and person.is_alive == True:
                 infected_list.append(person)
                 self.current_infected += 1
-        print(infected_list)
         return infected_list
     def run(self):
         ''' This method should run the simulation until all requirements for ending
@@ -213,10 +215,10 @@ class Simulation(object):
         #         self.logger.log_interaction(person, random_person, False, False, True)
         #     else:
         #         self.logger.log_interaction(person, random_person, False, False, False)
-        draw = uniform(0,1)
-        person = person.infection
-        if draw < person.repro_rate:
-            self.newly_infected.append(random_person)
+        # draw = uniform(0,1)
+        # person = person.infection
+        # if draw < person.repro_rate:
+        #     self.newly_infected.append(random_person)
 
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected

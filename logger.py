@@ -8,7 +8,7 @@ class Logger(object):
 
     def __init__(self, file_name):
         self.file_name = file_name
-        
+
     def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
                        basic_repro_num):
         '''
