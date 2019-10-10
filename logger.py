@@ -15,11 +15,11 @@ class Logger(object):
         The simulation class should use this method immediately to log the specific
         parameters of the simulation as the first line of the file.
         '''
-        
+
         # TIP: Use 'w' mode when you open the file. For all other methods, use
         # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
         file = open(self.file_name, "w")
-        file.write(f"Population size: {pop_size}\tVaccination percentage: {vacc_percentage}\t" 
+        file.write(f"Population size: {pop_size}\tVaccination percentage: {vacc_percentage}\t"
                 f"Virus name: {virus_name}\tMortality rate: {mortality_rate}\t"
                 f"Basic reproduction number: {basic_repro_num}\n")
         # file.close()

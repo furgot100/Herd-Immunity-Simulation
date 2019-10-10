@@ -37,6 +37,7 @@ class Simulation(object):
         # TODO: Store each newly infected person's ID in newly_infected attribute.
         # At the end of each time step, call self._infect_newly_infected()
         # and then reset .newly_infected back to an empty list.
+        self.time_step_counter = 0
         self.pop_size = pop_size # Int
         self.next_person_id = 0 # Int
         self.initial_infected = initial_infected # Int
@@ -48,10 +49,8 @@ class Simulation(object):
         self.total_dead = 0 # Int
         self.new_vaccinations = 0
         self.total_vaccinated = 0
-        self.population = self._create_population(self.initial_infected) # List of Person objects
-        self.file_name = "logs/{}_simulation_pop_{}_vp_{}_infected_{}.txt".format(
-                        virus.name, pop_size, vacc_percentage,
-                        initial_infected)
+        self.population = []# List of Person objects
+        self.file_name = "logs.txt"
         self.logger = Logger(self.file_name)
         self.newly_infected = []
         self.logger.write_metadata(self.pop_size, self.vacc_percentage,
@@ -78,12 +77,11 @@ class Simulation(object):
         # the correct intial vaccination percentage and initial infected.
         population = []
         total_un_affected = int(self.vacc_percentage * self.pop_size)
-        
+
         for people in range(self.pop_size):
             if people < initial_infected:
                 people = Person(people, False, self.virus)
                 self.current_infected += 1
-                self.total_infected += 1
             elif people < total_un_affected:
                 people = Person(people,True)
             else:
@@ -98,7 +96,7 @@ class Simulation(object):
                 bool: True for simulation should continue, False if it should end.
         '''
         # TODO: Complete this helper method.  Returns a Boolean.
-        if self.current_infected == 0:
+        if len(self.get_infected()) == 100:
             return False
         else:
             return True
@@ -114,26 +112,26 @@ class Simulation(object):
         # TODO: Keep track of the number of time steps that have passed.
         # HINT: You may want to call the logger's log_time_step() method at the end of each time step.
         # TODO: Set this variable using a helper
-        time_step_counter = 0
-        should_continue = True
-
+        log = self.logger
+        log.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
+        self._create_population(self.initial_infected)
+        should_continue = self._simulation_should_continue()
 
         while should_continue:
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
-            time_step_counter +=1
             self.time_step()
-            # self.logger.log_time_step(time_step_counter, self.current_infected, self.new_deaths, self.new_vaccinations,
-            # self.total_infected, self.total_dead,self.total_vaccinated)
+            self.time_step_counter +=1
+            log.log_time_step(self.time_step_counter)
             should_continue = self._simulation_should_continue()
 
-        print('The simulation has ended after {time_step_counter} turns.'.format(time_step_counter))
+        print(f'The simulation has ended after {self.time_step_counter} turns.')
 
     def get_infected(self):
         infected_list=[]
         self.current_infected = 0
         for person in self.population:
-            if person.infection is not None and person.is_alive:
+            if person.infection is not None and person.is_alive == True:
                 infected_list.append(person)
                 self.current_infected += 1
         return infected_list
@@ -163,6 +161,7 @@ class Simulation(object):
                     random_person = random.choice(self.population)
                 self.interaction(people, random_person)
                 interaction_count +=1
+
 
         for person in self.get_infected():
             survive = person.did_survive_infection()
