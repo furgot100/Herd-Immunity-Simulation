@@ -5,7 +5,6 @@ from virus import Virus
 
 class Person(object):
     ''' Person objects will populate the simulation. '''
-
     def __init__(self, _id, is_vaccinated, infection,is_alive):
         ''' We start out with is_alive = True, because we don't make vampires or zombies.
         All other values will be set by the simulation when it makes each Person object.
