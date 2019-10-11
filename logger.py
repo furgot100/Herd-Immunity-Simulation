@@ -1,10 +1,5 @@
 class Logger(object):
     ''' Utility class responsible for logging all interactions during the simulation. '''
-    # TODO: Write a test suite for this class to make sure each method is working
-    # as expected.
-
-    # PROTIP: Write your tests before you solve each function, that way you can
-    # test them one by one as you write your class.
 
     def __init__(self, file_name):
         self.file_name = file_name
@@ -36,8 +31,7 @@ class Logger(object):
         or the other edge cases:
             "{person.ID} didn't infect {random_person.ID} because {'vaccinated' or 'already sick'} \n"
         '''
-        # TODO: Finish this method. Think about how the booleans passed (or not passed)
-        # represent all the possible edge cases. Use the values passed along with each person,
+        # Use the values passed along with each person,
         # along with whether they are sick or vaccinated when they interact to determine
         # exactly what happened in the interaction and create a String, and write to your logfile.
         file = open(self.file_name, 'a')
@@ -58,7 +52,7 @@ class Logger(object):
         The format of the log should be:
             "{person.ID} died from infection\n" or "{person.ID} survived infection.\n"
         '''
-        # TODO: Finish this method. If the person survives, did_die_from_infection
+        # If the person survives, did_die_from_infection
         # should be False.  Otherwise, did_die_from_infection should be True.
         # Append the results of the infection to the logfile
         file = open(self.file_name, 'a')
