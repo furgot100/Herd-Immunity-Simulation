@@ -100,10 +100,12 @@ class Simulation(object):
                 bool: True for simulation should continue, False if it should end.
         '''
         # TODO: Complete this helper method.  Returns a Boolean.
-        if len(self.get_infected()) == 0:
+        if len(self.get_infected()) == 100:
             return False
         else:
+
             return True
+
 
     def get_infected(self):
         infected_list=[]
@@ -130,8 +132,9 @@ class Simulation(object):
         log.write_metadata(self.pop_size, self.vacc_percentage, self.virus.name, self.virus.mortality_rate, self.virus.repro_rate)
         self._create_population(self.initial_infected)
         should_continue = self._simulation_should_continue()
-        print(should_continue)
+        # print(should_continue)
         while should_continue:
+            print(should_continue)
         # TODO: for every iteration of this loop, call self.time_step() to compute another
         # round of this simulation.
 
@@ -155,7 +158,7 @@ class Simulation(object):
                 increment interaction counter by 1.
             '''
         # TODO: Finish this method.
-        interactions = 0
+        # interactions = 0
         for person in self.population:
             interactions = 0
             # print(len(self.population))
@@ -164,8 +167,13 @@ class Simulation(object):
                 if person.is_alive == True and person.infection is not None:
                     random_person = random.choice(self.population)
                     if (random_person.is_alive == True):
+                        # print(interactions)
                         self.interaction(person, random_person)
                         interactions += 1
+
+            # print("sdfsdfsdf")
+                    # else:
+                    #     continue
                         # print(interactions)
 
         self._infect_newly_infected()
@@ -197,16 +205,21 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their .infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call slogger method during this method.
-        if random_person.is_vaccinated:
-            self.logger.log_interaction(person, random_person, False, True, False)
-        elif random_person.infection is not None:
-            self.logger.log_interaction(person, random_person, True, False, False)
-        else:
-            if random.uniform(0,1) < person.infection.repro_rate and random_person._id not in self.newly_infected:
-                self.newly_infected.append(random_person._id)
-                self.logger.log_interaction(person, random_person, False, False, True)
-            else:
-                self.logger.log_interaction(person, random_person, False, False, False)
+
+        # if random_person.is_vaccinated:
+        #     self.logger.log_interaction(person, random_person, False, True, False)
+        # elif random_person.infection is not None:
+        #     self.logger.log_interaction(person, random_person, True, False, False)
+        # else:
+        #     if random.uniform(0,1) < person.infection.repro_rate and random_person._id not in self.newly_infected:
+        #         self.newly_infected.append(random_person._id)
+        #         self.logger.log_interaction(person, random_person, False, False, True)
+        #     else:
+        #         self.logger.log_interaction(person, random_person, False, False, False)
+        draw = uniform(0,1)
+        person = person.infection
+        if (draw < person.repro_rate):
+            self.newly_infected.append(random_person)
 
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected

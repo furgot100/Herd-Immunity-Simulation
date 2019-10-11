@@ -1,5 +1,5 @@
 from random import random
-random.seed(42)
+# random.seed(42)
 from virus import Virus
 
 
@@ -38,7 +38,7 @@ class Person(object):
 ''' These are simple tests to ensure that you are instantiating your Person class correctly. '''
 def test_vacc_person_instantiation():
     # create some people to test if our init method works as expected
-    person = Person(1, True, None, True) 
+    person = Person(1, True, None, True)
     assert person._id == 1
     assert person.is_alive is True
     assert person.is_vaccinated is True
