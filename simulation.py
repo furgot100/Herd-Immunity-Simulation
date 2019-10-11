@@ -100,7 +100,7 @@ class Simulation(object):
                 bool: True for simulation should continue, False if it should end.
         '''
         # TODO: Complete this helper method.  Returns a Boolean.
-        if len(self.get_infected()) == 100:
+        if len(self.get_infected()) == 0:
             return False
         else:
             return True
