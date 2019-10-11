@@ -103,7 +103,6 @@ class Simulation(object):
         if len(self.get_infected()) == 100:
             return False
         else:
-
             return True
 
 
@@ -159,23 +158,18 @@ class Simulation(object):
             '''
         # TODO: Finish this method.
         # interactions = 0
+        interactions = 0
         for person in self.population:
-            interactions = 0
             # print(len(self.population))
             while interactions < 100:
+                # print('a')
                 # print(f'{person._id}: {interactions}')
                 if person.is_alive == True and person.infection is not None:
                     random_person = random.choice(self.population)
                     if (random_person.is_alive == True):
-                        # print(interactions)
                         self.interaction(person, random_person)
                         interactions += 1
-
-            # print("sdfsdfsdf")
-                    # else:
-                    #     continue
-                        # print(interactions)
-
+                        print(interactions)
         self._infect_newly_infected()
         self.get_infected()
 
@@ -206,20 +200,20 @@ class Simulation(object):
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call slogger method during this method.
 
-        # if random_person.is_vaccinated:
-        #     self.logger.log_interaction(person, random_person, False, True, False)
-        # elif random_person.infection is not None:
-        #     self.logger.log_interaction(person, random_person, True, False, False)
-        # else:
-        #     if random.uniform(0,1) < person.infection.repro_rate and random_person._id not in self.newly_infected:
-        #         self.newly_infected.append(random_person._id)
-        #         self.logger.log_interaction(person, random_person, False, False, True)
-        #     else:
-        #         self.logger.log_interaction(person, random_person, False, False, False)
-        draw = uniform(0,1)
-        person = person.infection
-        if (draw < person.repro_rate):
-            self.newly_infected.append(random_person)
+        if random_person.is_vaccinated:
+            self.logger.log_interaction(person, random_person, False, True, False)
+        elif random_person.infection is not None:
+            self.logger.log_interaction(person, random_person, True, False, False)
+        else:
+            if random.uniform(0,1) < person.infection.repro_rate and random_person._id not in self.newly_infected:
+                self.newly_infected.append(random_person)
+                self.logger.log_interaction(person, random_person, False, False, True)
+            else:
+                self.logger.log_interaction(person, random_person, False, False, False)
+        # draw = uniform(0,1)
+        # person = person.infection
+        # if (draw < person.repro_rate):
+        #     self.newly_infected.append(random_person)
 
     def _infect_newly_infected(self):
         ''' This method should iterate through the list of ._id stored in self.newly_infected

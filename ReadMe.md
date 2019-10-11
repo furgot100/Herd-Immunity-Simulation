@@ -81,7 +81,7 @@ separated by spaces:
  * People Initially Infected: 10
 
  Then I would type: <br>
- `python3 simulation.py 100000 0.90 Ebola 0.70 0.25 10` in the terminal.
+ `python3 simulation.py 100 0.90 Ebola 0.70 0.25 10` in the terminal.
 
 ## Basic Structure
 
